@@ -2,610 +2,688 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Decision Reset</title>
-  <meta name="description" content="A calm decision reset tool for overwhelmed parents, adults, and workers." />
-
+  <meta name="description" content="A fast decision reset for Calm, Parent, and Work mode. No accounts. No tracking. Just clarity." />
   <style>
     :root{
-      --bg:#ffffff;
-      --text:#111827;
-      --muted:#6b7280;
-      --card:#f8fafc;
-      --border:#e5e7eb;
-      --btn:#111827;
-      --btnText:#ffffff;
-      --soft:#f3f4f6;
-      --pill:#eef2ff;
-      --accent:#2563eb;
+      --bg:#0b1020;
+      --card:#111a33;
+      --card2:#0f1730;
+      --text:#eaf0ff;
+      --muted:#9aa7c7;
+      --border:rgba(255,255,255,.10);
+      --accent:#7aa2ff;
+      --accent2:#7dffca;
+      --danger:#ff7a7a;
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --radius:18px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
+      background:
+        radial-gradient(1000px 600px at 15% -10%, rgba(122,162,255,.18), transparent 55%),
+        radial-gradient(900px 600px at 110% 10%, rgba(125,255,202,.12), transparent 55%),
+        var(--bg);
     }
-    .wrap{
-      max-width:820px;
-      margin:0 auto;
-      padding:18px 14px 56px;
+    .wrap{max-width:860px; margin:0 auto; padding:18px 14px 52px;}
+    .top{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      padding:10px 4px 4px;
     }
-    header{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      padding:10px 6px 6px;
+    .brand{display:flex; gap:10px; align-items:center;}
+    .logo{
+      width:44px; height:44px; border-radius:16px;
+      background: linear-gradient(135deg, rgba(122,162,255,.95), rgba(125,255,202,.75));
+      display:grid; place-items:center; color:#061027; font-weight:900;
+      box-shadow: var(--shadow);
     }
-    .brand h1{
-      margin:0;
-      font-size:28px;
-      letter-spacing:-0.02em;
-    }
-    .brand p{
-      margin:6px 0 0;
-      color:var(--muted);
-      line-height:1.35;
-      max-width:54ch;
-    }
-    .topActions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      padding-top:4px;
-    }
+    h1{margin:0; font-size:22px; letter-spacing:-0.02em;}
+    .sub{margin:4px 0 0; color:var(--muted); font-size:13px; line-height:1.35; max-width:60ch;}
+    .actions{display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end;}
     .miniBtn{
       border:1px solid var(--border);
-      background:#fff;
-      padding:8px 10px;
-      border-radius:12px;
-      font-size:14px;
+      background: rgba(255,255,255,.04);
       color:var(--text);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:13px;
       cursor:pointer;
     }
-    .miniBtn:active{transform:scale(0.98)}
+    .miniBtn:active{transform:scale(.99)}
     .grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-      margin-top:10px;
+      display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top:14px;
     }
-    @media (min-width:860px){
-      .grid{grid-template-columns:1.1fr 0.9fr;}
-    }
+    @media (max-width:900px){ .grid{grid-template-columns:1fr;} .actions{justify-content:flex-start;} }
     .card{
-      background:var(--card);
+      background: rgba(17,26,51,.86);
       border:1px solid var(--border);
-      border-radius:18px;
-      padding:14px;
-      box-shadow: 0 8px 26px rgba(17,24,39,0.05);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:16px;
+      position:relative;
+      overflow:hidden;
     }
+    .card:before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: linear-gradient(135deg, rgba(122,162,255,.12), rgba(125,255,202,.08), transparent 60%);
+      pointer-events:none;
+    }
+    .card > *{position:relative}
     .sectionTitle{
-      font-size:14px;
-      font-weight:700;
-      color:var(--muted);
-      letter-spacing:0.04em;
-      text-transform:uppercase;
-      margin:0 0 10px;
+      font-size:13px; text-transform:uppercase; letter-spacing:.06em;
+      color:var(--muted); margin:0 0 10px; font-weight:800;
     }
-
-    .modeRow{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    .modeBtns{display:grid; gap:10px;}
     .modeBtn{
       width:100%;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
       text-align:left;
       border:1px solid var(--border);
-      background:#fff;
+      background: rgba(255,255,255,.04);
+      color:var(--text);
       padding:12px 12px;
-      border-radius:16px;
+      border-radius: 16px;
       cursor:pointer;
-      transition: box-shadow .15s ease, transform .05s ease;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+      transition:.15s transform,.15s background;
     }
-    .modeBtn:hover{box-shadow: 0 10px 24px rgba(17,24,39,0.08);}
-    .modeBtn:active{transform:scale(0.99)}
-    .modeLeft{display:flex; flex-direction:column; gap:4px;}
-    .modeName{font-size:16px; font-weight:800;}
-    .modeDesc{font-size:13px; color:var(--muted); line-height:1.3;}
-    .badge{
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:var(--pill);
-      border:1px solid #dbeafe;
-      color:#1d4ed8;
-      white-space:nowrap;
-    }
-
-    .flow{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      min-height:250px;
+    .modeBtn:hover{background: rgba(255,255,255,.06); transform: translateY(-1px);}
+    .modeBtn:active{transform: translateY(0px) scale(.99);}
+    .modeLeft{display:flex; flex-direction:column; gap:3px;}
+    .modeName{font-weight:900; font-size:15px;}
+    .modeDesc{font-size:12.5px; color:var(--muted); line-height:1.3;}
+    .tag{
+      font-size:12px; padding:6px 10px; border-radius:999px; white-space:nowrap;
+      border:1px solid rgba(122,162,255,.25);
+      background: rgba(122,162,255,.12);
+      color: var(--accent);
     }
     .prompt{
-      background:#fff;
+      background: rgba(15,23,48,.75);
       border:1px solid var(--border);
       border-radius:16px;
       padding:12px;
-      line-height:1.5;
-      font-size:16px;
+      line-height:1.45;
+      font-size:15px;
     }
-    .prompt strong{font-weight:900}
-    .sub{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.35;
-      margin-top:-6px;
-    }
-    .choices{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    .choices{display:grid; gap:10px; margin-top:12px;}
     .choiceBtn{
       border:1px solid var(--border);
-      background:#fff;
+      background: rgba(255,255,255,.04);
+      color:var(--text);
       padding:12px 12px;
-      border-radius:16px;
+      border-radius: 16px;
       cursor:pointer;
       text-align:left;
-      font-size:15px;
+      font-size:14.5px;
       line-height:1.35;
+      transition:.15s background,.15s transform;
     }
-    .choiceBtn:hover{box-shadow: 0 10px 24px rgba(17,24,39,0.08);}
-    .choiceBtn:active{transform:scale(0.99)}
-    .navRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:2px;
-    }
-    .primary{
-      background:var(--btn);
-      color:var(--btnText);
-      border:1px solid var(--btn);
+    .choiceBtn:hover{background: rgba(255,255,255,.06); transform: translateY(-1px);}
+    .choiceBtn:active{transform: translateY(0px) scale(.99);}
+    .navRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+    .secondary{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
       padding:10px 12px;
       border-radius:14px;
       cursor:pointer;
       font-weight:800;
     }
-    .secondary{
-      background:#fff;
-      color:var(--text);
-      border:1px solid var(--border);
+    .primary{
+      border:1px solid rgba(125,255,202,.25);
+      background: rgba(125,255,202,.12);
+      color: var(--accent2);
       padding:10px 12px;
       border-radius:14px;
       cursor:pointer;
-      font-weight:700;
+      font-weight:900;
     }
-    .primary:active,.secondary:active{transform:scale(0.99)}
-    .tiny{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:6px;
-    }
+    .secondary:active,.primary:active{transform:scale(.99)}
+    .tiny{margin-top:10px; color:var(--muted); font-size:12px; line-height:1.35;}
     .footer{
       margin-top:14px;
-      text-align:center;
       color:var(--muted);
-      font-size:13px;
+      font-size:12.5px;
+      text-align:center;
     }
     .toast{
       position:fixed;
-      left:50%;
-      bottom:18px;
+      left:50%; bottom:18px;
       transform:translateX(-50%);
-      background:#111827;
-      color:#fff;
+      background:#0a1226;
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
       padding:10px 12px;
       border-radius:999px;
       font-size:13px;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .2s ease;
+      box-shadow: var(--shadow);
+      opacity:0; pointer-events:none;
+      transition: opacity .18s ease;
     }
     .toast.show{opacity:1}
-    .hr{height:1px;background:var(--border);margin:10px 0}
+    .proHint{
+      margin-top:12px;
+      background: rgba(122,162,255,.10);
+      border: 1px solid rgba(122,162,255,.22);
+      padding:10px 12px;
+      border-radius:14px;
+      font-size:13px;
+      color: var(--text);
+      line-height:1.35;
+    }
+    .proHint strong{color:var(--accent)}
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <header>
+    <div class="top">
       <div class="brand">
-        <h1>Decision Reset</h1>
-        <p>No accounts. No tracking. Just clarity — for overwhelmed parents, adults, and workers.</p>
-      </div>
-      <div class="topActions">
-        <button class="miniBtn" onclick="copyLink()">Copy link</button>
-        <button class="miniBtn" onclick="shareLink()">Share</button>
-        <button class="miniBtn" onclick="hardReset()">Reset</button>
-      </div>
-    </header>
-
-    <div class="grid">
-      <div class="card">
-        <div class="sectionTitle">Choose a mode</div>
-        <div class="modeRow" id="modeButtons">
-          <button class="modeBtn" onclick="startMode('calm')">
-            <div class="modeLeft">
-              <div class="modeName">🧠 Calm Mode</div>
-              <div class="modeDesc">Everyday overwhelm. Anxiety spikes. “Too much” feelings.</div>
-            </div>
-            <span class="badge">60–90 seconds</span>
-          </button>
-
-          <button class="modeBtn" onclick="startMode('parent')">
-            <div class="modeLeft">
-              <div class="modeName">👨‍👩‍👧‍👦 Parent Mode</div>
-              <div class="modeDesc">Kids + family pressure. Noise, mess, time crunch, meltdowns.</div>
-            </div>
-            <span class="badge">1–2 minutes</span>
-          </button>
-
-          <button class="modeBtn" onclick="startMode('work')">
-            <div class="modeLeft">
-              <div class="modeName">💼 Work Mode</div>
-              <div class="modeDesc">Deadlines + money stress. Priorities. What matters now.</div>
-            </div>
-            <span class="badge">90 seconds</span>
-          </button>
-        </div>
-
-        <div class="hr"></div>
-        <div class="sub">
-          Tip: This is built to be shared. If it helps you, send it to one person who’s overloaded.
+        <div class="logo">DR</div>
+        <div>
+          <h1>Decision Reset</h1>
+          <div class="sub">No accounts. No tracking. Just clarity — for overwhelmed parents, adults, and workers.</div>
         </div>
       </div>
-
-      <div class="card">
-        <div class="sectionTitle">Your reset</div>
-
-        <div class="flow">
-          <div id="flowTitle" class="sub">Pick a mode to begin.</div>
-
-          <div id="prompt" class="prompt">
-            <strong>Quick start:</strong><br>
-            Choose the mode you need right now.<br><br>
-            This tool will give you one clear next step — without panic spirals.
-          </div>
-
-          <div id="choices" class="choices"></div>
-
-          <div class="navRow" id="navRow" style="display:none;">
-            <button class="secondary" onclick="goBack()">← Back</button>
-            <button class="primary" onclick="goNext()">Next →</button>
-          </div>
-
-          <div class="tiny" id="progress"></div>
-        </div>
+      <div class="actions">
+        <button class="miniBtn" onclick="copyLink()">🔗 Copy link</button>
+        <button class="miniBtn" onclick="shareLink()">📤 Share</button>
+        <button class="miniBtn" onclick="resetAll()">🔄 Reset</button>
       </div>
     </div>
 
-    <div class="footer">
-      Built for real life. Use it. Share it. Improve it.
+    <div class="grid">
+      <div class="card">
+        <div class="sectionTitle">Pick a mode</div>
+
+        <div class="modeBtns" id="modeBtns">
+          <button class="modeBtn" onclick="start('calm')">
+            <div class="modeLeft">
+              <div class="modeName">🧠 Calm Mode</div>
+              <div class="modeDesc">Anxiety, overwhelm, emotional noise. Fast reset.</div>
+            </div>
+            <span class="tag">~90 sec</span>
+          </button>
+
+          <button class="modeBtn" onclick="start('parent')">
+            <div class="modeLeft">
+              <div class="modeName">👨‍👩‍👧 Parent Mode</div>
+              <div class="modeDesc">Chaos, meltdowns, time crunch, you’re maxed out.</div>
+            </div>
+            <span class="tag">~2 min</span>
+          </button>
+
+          <button class="modeBtn" onclick="start('work')">
+            <div class="modeLeft">
+              <div class="modeName">💼 Work Mode</div>
+              <div class="modeDesc">Deadlines, money pressure, too many tasks.</div>
+            </div>
+            <span class="tag">~90 sec</span>
+          </button>
+        </div>
+
+        <div class="tiny">
+          If this helped, send it to someone overwhelmed right now. Small tools travel fast.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sectionTitle" id="rightTitle">Your reset</div>
+
+        <div id="prompt" class="prompt">
+          <strong>Quick start:</strong><br><br>
+          Choose the mode you need. Answer 2–3 quick questions. Get one clear next step.
+        </div>
+
+        <div id="choices" class="choices"></div>
+
+        <div class="navRow" id="navRow" style="display:none;">
+          <button class="secondary" onclick="goBack()">← Back</button>
+          <button class="secondary" onclick="resetMode()">↩︎ Modes</button>
+        </div>
+
+        <div class="footer">Built for real life. Keep it simple. Keep it moving.</div>
+      </div>
     </div>
   </div>
 
   <div class="toast" id="toast">Copied.</div>
 
-  <script>
-    // --------- Flow content (editable) ----------
-    const FLOWS = {
-      calm: {
-        title: "🧠 Calm Mode",
-        steps: [
-          {
-            prompt: "<strong>Step 1: Interrupt the spiral</strong><br><br>Take one slow breath in… and a longer breath out.<br><br>Quick check: what’s your body doing?",
-            choices: [
-              { label: "Jaw clenched / shoulders up", action: { set: "noted", value: "tension" } },
-              { label: "Racing thoughts", action: { set: "noted", value: "racing" } },
-              { label: "I feel flat / shut down", action: { set: "noted", value: "flat" } }
-            ]
-          },
-          {
-            prompt: "<strong>Step 2: Name the category</strong><br><br>What kind of problem is this?",
-            choices: [
-              { label: "A real emergency (safety/health)", action: { set: "category", value: "emergency" } },
-              { label: "A decision (I’m stuck choosing)", action: { set: "category", value: "decision" } },
-              { label: "Too many tasks (I’m overloaded)", action: { set: "category", value: "overload" } }
-            ]
-          },
-          {
-            prompt: "<strong>Step 3: Make the smallest useful move</strong><br><br>Pick ONE. Not perfect — just useful.",
-            choices: [
-              { label: "Text/call the one person who can help", action: { set: "move", value: "ask_help" } },
-              { label: "Write the next step on a note (10 words max)", action: { set: "move", value: "write_step" } },
-              { label: "Set a 10-min timer and start messy", action: { set: "move", value: "timer_start" } }
-            ]
-          },
-          {
-            prompt: "<strong>Finish: Your reset</strong><br><br><span id='finalCalm'></span><br><br>Humour check: you’re not behind — you’re just running a whole human system on low battery.",
-            final: true
-          }
-        ]
-      },
+<script>
+  // -------------------------
+  // FREE v1.5 flows (2–3 questions)
+  // -------------------------
 
-      parent: {
-        title: "👨‍👩‍👧‍👦 Parent Mode",
-        steps: [
-          {
-            prompt: "<strong>Step 1: Safety first, always</strong><br><br>Are the kids safe right now?",
-            choices: [
-              { label: "Yes", action: { set: "safety", value: "safe" } },
-              { label: "Not sure / No", action: { set: "safety", value: "not_safe" } }
-            ]
-          },
-          {
-            prompt: "<strong>Step 2: What’s the pressure source?</strong><br><br>Pick the biggest thing happening.",
-            choices: [
-              { label: "Noise / chaos / overstimulation", action: { set: "pressure", value: "noise" } },
-              { label: "Time crunch (late / appointments)", action: { set: "pressure", value: "time" } },
-              { label: "Behaviour / meltdown / arguing", action: { set: "pressure", value: "meltdown" } }
-            ]
-          },
-          {
-            prompt: "<strong>Step 3: Choose your ‘one move’</strong><br><br>What helps most in the next 10 minutes?",
-            choices: [
-              { label: "Reduce stimulation (lights down / quiet corner)", action: { set: "one_move", value: "reduce_stim" } },
-              { label: "Two-minute tidy (only obvious hazards)", action: { set: "one_move", value: "hazard_tidy" } },
-              { label: "Reset the room: water + snack + sit down", action: { set: "one_move", value: "water_snack" } }
-            ]
-          },
-          {
-            prompt: "<strong>Finish: Your parent reset</strong><br><br><span id='finalParent'></span><br><br>Reminder: being calm is a skill, not a personality trait. You’re training it under hard conditions.",
-            final: true
-          }
-        ]
-      },
+  const FLOWS = {
+    calm: {
+      title: "🧠 Calm Mode",
+      steps: [
+        {
+          prompt: "<strong>What’s the loudest feeling right now?</strong>",
+          choices: [
+            { label: "😰 Anxiety / racing thoughts", set: "feeling", value: "anxiety" },
+            { label: "😤 Anger / frustration", set: "feeling", value: "anger" },
+            { label: "😴 Exhaustion / shutdown", set: "feeling", value: "exhaustion" },
+            { label: "🤯 Overwhelm / too many decisions", set: "feeling", value: "overwhelm" }
+          ]
+        },
+        {
+          prompt: "<strong>How urgent does this feel?</strong>",
+          choices: [
+            { label: "🚨 Right now", set: "urgency", value: "now" },
+            { label: "📅 Today", set: "urgency", value: "today" },
+            { label: "🔊 Not urgent, just loud", set: "urgency", value: "loud" }
+          ]
+        },
+        { final: true }
+      ]
+    },
 
-      work: {
-        title: "💼 Work Mode",
-        steps: [
-          {
-            prompt: "<strong>Step 1: What kind of work-stress is this?</strong>",
-            choices: [
-              { label: "Money pressure (need income)", action: { set: "work_type", value: "money" } },
-              { label: "Deadline pressure (need output)", action: { set: "work_type", value: "deadline" } },
-              { label: "Too many choices (stuck)", action: { set: "work_type", value: "stuck" } }
-            ]
-          },
-          {
-            prompt: "<strong>Step 2: Pick the highest leverage target</strong><br><br>Which one reduces pressure the fastest?",
-            choices: [
-              { label: "A task that creates cash or leads", action: { set: "target", value: "cash" } },
-              { label: "A task that removes a blocker", action: { set: "target", value: "blocker" } },
-              { label: "A task that prevents a problem (risk)", action: { set: "target", value: "risk" } }
-            ]
-          },
-          {
-            prompt: "<strong>Step 3: Lock a 25-minute sprint</strong><br><br>Choose your sprint style.",
-            choices: [
-              { label: "25 minutes focused, phone away", action: { set: "sprint", value: "deep" } },
-              { label: "10 minutes messy start (then continue)", action: { set: "sprint", value: "messy" } },
-              { label: "5 minutes admin to reduce anxiety", action: { set: "sprint", value: "admin" } }
-            ]
-          },
-          {
-            prompt: "<strong>Finish: Your work reset</strong><br><br><span id='finalWork'></span><br><br>Humour check: your brain is not a browser with 47 tabs. (But it tries.)",
-            final: true
-          }
-        ]
-      }
-    };
+    parent: {
+      title: "👨‍👩‍👧 Parent Mode",
+      steps: [
+        {
+          prompt: "<strong>What’s the main issue right now?</strong>",
+          choices: [
+            { label: "🔊 Chaos / noise / everyone talking at once", set: "issue", value: "chaos" },
+            { label: "🌋 Meltdown / arguing / big emotions", set: "issue", value: "meltdown" },
+            { label: "⏰ Time pressure (late / appointments)", set: "issue", value: "time" },
+            { label: "🧨 I’m about to snap", set: "issue", value: "snap" }
+          ]
+        },
+        {
+          prompt: "<strong>Are the kids safe right now?</strong>",
+          choices: [
+            { label: "✅ Yes", set: "safe", value: "yes" },
+            { label: "⚠️ Not sure / No", set: "safe", value: "no" }
+          ]
+        },
+        {
+          prompt: "<strong>What do you need most in the next 10 minutes?</strong>",
+          choices: [
+            { label: "🧊 Calm (reduce volume & tension)", set: "need", value: "calm" },
+            { label: "🤝 Cooperation (get them moving)", set: "need", value: "coop" },
+            { label: "📦 Containment (stop the chaos spreading)", set: "need", value: "contain" }
+          ]
+        },
+        { final: true }
+      ]
+    },
 
-    // --------- State ----------
-    let mode = null;
-    let stepIndex = 0;
-    let answers = {};
-
-    // Restore state from localStorage (optional)
-    const saved = localStorage.getItem("decision_reset_state");
-    if (saved) {
-      try {
-        const s = JSON.parse(saved);
-        if (s && s.mode && typeof s.stepIndex === "number") {
-          mode = s.mode; stepIndex = s.stepIndex; answers = s.answers || {};
-          render();
-        }
-      } catch(e){}
+    work: {
+      title: "💼 Work Mode",
+      steps: [
+        {
+          prompt: "<strong>What kind of pressure is this?</strong>",
+          choices: [
+            { label: "💸 Money pressure", set: "pressure", value: "money" },
+            { label: "📆 Deadline pressure", set: "pressure", value: "deadline" },
+            { label: "🧺 Too many tasks", set: "pressure", value: "many" }
+          ]
+        },
+        {
+          prompt: "<strong>What matters more today?</strong>",
+          choices: [
+            { label: "😮‍💨 Reduce stress fast", set: "goal", value: "stress" },
+            { label: "📈 Make progress", set: "goal", value: "progress" },
+            { label: "💰 Make money", set: "goal", value: "money" }
+          ]
+        },
+        { final: true }
+      ]
     }
+  };
 
-    function persist(){
-      localStorage.setItem("decision_reset_state", JSON.stringify({ mode, stepIndex, answers }));
-    }
+  let state = {
+    mode: null,
+    step: 0,
+    answers: {}
+  };
 
-    // --------- UI helpers ----------
-    const elTitle = document.getElementById("flowTitle");
-    const elPrompt = document.getElementById("prompt");
-    const elChoices = document.getElementById("choices");
-    const elNavRow = document.getElementById("navRow");
-    const elProgress = document.getElementById("progress");
+  const promptEl = document.getElementById("prompt");
+  const choicesEl = document.getElementById("choices");
+  const navRowEl = document.getElementById("navRow");
+  const rightTitleEl = document.getElementById("rightTitle");
+  const toastEl = document.getElementById("toast");
 
-    function startMode(m){
-      mode = m;
-      stepIndex = 0;
-      answers = {};
-      persist();
-      render();
-    }
-
-    function goNext(){
-      const flow = FLOWS[mode];
-      if (!flow) return;
-      if (stepIndex < flow.steps.length - 1) {
-        stepIndex++;
-        persist();
-        render();
-      }
-    }
-
-    function goBack(){
-      if (!mode) return;
-      if (stepIndex > 0) {
-        stepIndex--;
-        persist();
-        render();
-      } else {
-        // back to mode select
-        mode = null;
-        stepIndex = 0;
-        answers = {};
-        persist();
-        render();
-      }
-    }
-
-    function hardReset(){
-      mode = null;
-      stepIndex = 0;
-      answers = {};
-      localStorage.removeItem("decision_reset_state");
-      render();
-      toast("Reset.");
-    }
-
-    function pickChoice(action){
-      if (!action) return;
-      answers[action.set] = action.value;
-      persist();
-      // auto-next for choice steps
-      goNext();
-    }
-
-    function toast(msg){
-      const t = document.getElementById("toast");
-      t.textContent = msg;
-      t.classList.add("show");
-      setTimeout(()=>t.classList.remove("show"), 1300);
-    }
-
-    async function copyLink(){
-      try{
-        await navigator.clipboard.writeText(location.href);
-        toast("Link copied.");
-      }catch(e){
-        toast("Copy failed. Tap the share icon.");
-      }
-    }
-
-    async function shareLink(){
-      const data = { title: "Decision Reset", text: "A fast calm reset tool (no login).", url: location.href };
-      if (navigator.share) {
-        try { await navigator.share(data); } catch(e){}
-      } else {
-        copyLink();
-      }
-    }
-
-    function render(){
-      // Mode not selected
-      if (!mode){
-        elTitle.textContent = "Pick a mode to begin.";
-        elPrompt.innerHTML = "<strong>Quick start:</strong><br><br>Choose the mode you need right now.<br><br>This tool will give you one clear next step — without panic spirals.";
-        elChoices.innerHTML = "";
-        elNavRow.style.display = "none";
-        elProgress.textContent = "";
-        return;
-      }
-
-      const flow = FLOWS[mode];
-      const steps = flow.steps;
-      const step = steps[stepIndex];
-
-      elTitle.textContent = flow.title;
-      elPrompt.innerHTML = step.prompt;
-
-      // Choices
-      elChoices.innerHTML = "";
-      if (step.choices && step.choices.length){
-        step.choices.forEach(c=>{
-          const b = document.createElement("button");
-          b.className = "choiceBtn";
-          b.innerHTML = c.label;
-          b.onclick = ()=>pickChoice(c.action);
-          elChoices.appendChild(b);
-        });
-        elNavRow.style.display = "flex";
-        // Next is optional when choices exist; but keep it to allow manual progression
-      } else {
-        elNavRow.style.display = "flex";
-      }
-
-      // Nav button states
-      const nextBtn = elNavRow.querySelector(".primary");
-      const backBtn = elNavRow.querySelector(".secondary");
-      backBtn.style.display = "inline-block";
-
-      if (step.final){
-        nextBtn.textContent = "Start over";
-        nextBtn.onclick = ()=>hardReset();
-
-        // Build final message per mode
-        setTimeout(()=>{
-          if (mode === "calm"){
-            const line = buildCalmFinal();
-            const slot = document.getElementById("finalCalm");
-            if (slot) slot.textContent = line;
-          }
-          if (mode === "parent"){
-            const line = buildParentFinal();
-            const slot = document.getElementById("finalParent");
-            if (slot) slot.textContent = line;
-          }
-          if (mode === "work"){
-            const line = buildWorkFinal();
-            const slot = document.getElementById("finalWork");
-            if (slot) slot.textContent = line;
-          }
-        }, 0);
-      } else {
-        nextBtn.textContent = "Next →";
-        nextBtn.onclick = ()=>goNext();
-      }
-
-      elProgress.textContent = `Step ${Math.min(stepIndex+1, steps.length)} of ${steps.length}`;
-
-      // Persist state while viewing
-      persist();
-    }
-
-    function buildCalmFinal(){
-      const cat = answers.category;
-      if (cat === "emergency") return "If it’s safety/health, act on the basics first: call for help, remove risk, do the next obvious safety step.";
-      if (cat === "decision") return "Write 2 options. Pick the one that reduces stress fastest. Commit for 24 hours. Re-evaluate tomorrow.";
-      if (cat === "overload") return "Make a 3-item list: 1 must-do, 1 should-do, 1 can-wait. Do the must-do now.";
-      return "Pick the smallest useful next step. Ten minutes beats ten hours of spiralling.";
-    }
-
-    function buildParentFinal(){
-      if (answers.safety === "not_safe") return "Immediate priority: safety. Remove hazards, separate kids if needed, call support if required. Everything else waits.";
-      const p = answers.pressure;
-      if (p === "noise") return "Reduce stimulation: lower lights, quieter space, water + breathing. You’re resetting the room, not winning an argument.";
-      if (p === "time") return "Time crunch provide clarity: one instruction, one task, one timer. ‘Shoes on. Bag in hand. We go.’";
-      if (p === "meltdown") return "Meltdown rule: connect first, correct later. Short phrases. Calm voice. Slow movements. You’re the thermostat.";
-      return "Pick the kindest next action that reduces chaos in the next 10 minutes.";
-    }
-
-    function buildWorkFinal(){
-      const t = answers.target;
-      if (t === "cash") return "Do the cash task first: outreach, follow-ups, listings, calls. One sprint. Then reassess.";
-      if (t === "blocker") return "Remove the blocker: get the missing info, make the call, send the message, decide the next step.";
-      if (t === "risk") return "Prevent the problem: pay the urgent thing, send the update, set expectations, reduce damage now.";
-      return "Pick the task that reduces pressure the fastest — then do one focused sprint.";
-    }
-
-    // Initial render
+  function start(mode){
+    state.mode = mode;
+    state.step = 0;
+    state.answers = {};
     render();
-  </script>
+  }
+
+  function resetAll(){
+    state.mode = null;
+    state.step = 0;
+    state.answers = {};
+    rightTitleEl.textContent = "Your reset";
+    promptEl.innerHTML = "<strong>Quick start:</strong><br><br>Choose the mode you need. Answer 2–3 quick questions. Get one clear next step.";
+    choicesEl.innerHTML = "";
+    navRowEl.style.display = "none";
+  }
+
+  function resetMode(){
+    resetAll();
+  }
+
+  function goBack(){
+    if (!state.mode) return;
+    if (state.step > 0) {
+      state.step--;
+      render();
+    } else {
+      resetAll();
+    }
+  }
+
+  function pick(set, value){
+    state.answers[set] = value;
+    state.step++;
+    render();
+  }
+
+  function render(){
+    if (!state.mode) return;
+
+    const flow = FLOWS[state.mode];
+    rightTitleEl.textContent = flow.title;
+
+    const stepObj = flow.steps[state.step];
+
+    navRowEl.style.display = "flex";
+
+    if (stepObj && stepObj.final){
+      showFinal(state.mode, state.answers);
+      return;
+    }
+
+    promptEl.innerHTML = stepObj.prompt;
+    choicesEl.innerHTML = "";
+
+    stepObj.choices.forEach(c => {
+      const b = document.createElement("button");
+      b.className = "choiceBtn";
+      b.textContent = c.label;
+      b.onclick = () => pick(c.set, c.value);
+      choicesEl.appendChild(b);
+    });
+  }
+
+  function showFinal(mode, a){
+    const out = buildOutput(mode, a);
+    promptEl.innerHTML = out;
+    choicesEl.innerHTML = "";
+  }
+
+  function buildOutput(mode, a){
+    if (mode === "calm") return calmOutput(a);
+    if (mode === "parent") return parentOutput(a);
+    return workOutput(a);
+  }
+
+  function calmOutput(a){
+    const feeling = a.feeling;
+    const urgency = a.urgency;
+
+    let whats = "Your nervous system is reacting — not failing.";
+    let nowBullets = [
+      "🫁 Long exhale (10 seconds). Drop your shoulders.",
+      "📝 Write the problem in ONE sentence (no story).",
+      "🧱 Do one tiny action that moves it forward."
+    ];
+    let script = "“I don’t need the whole plan. I just need the next step.”";
+
+    if (feeling === "anxiety"){
+      nowBullets = [
+        "🫁 Exhale longer than you inhale (x3).",
+        "🧠 Name 3 things you can see / 2 you can feel / 1 you can hear.",
+        "📝 Write: ‘The next 10 minutes is for ___.’ Then do it."
+      ];
+      script = "“My brain is loud, but I’m safe. Next step only.”";
+    }
+    if (feeling === "anger"){
+      nowBullets = [
+        "🧊 Pause before you speak (3 slow breaths).",
+        "🚪 Give yourself 60 seconds away from the trigger if possible.",
+        "📝 Choose one boundary or one message. Keep it short."
+      ];
+      script = "“I’m not deciding while I’m heated. I’ll act after I reset.”";
+    }
+    if (feeling === "exhaustion"){
+      nowBullets = [
+        "💧 Water first (or quick snack).",
+        "📉 Lower the bar: choose the smallest acceptable outcome.",
+        "⏲️ 10-minute timer. Start messy. Stop when it ends."
+      ];
+      script = "“Good enough counts today.”";
+    }
+    if (feeling === "overwhelm"){
+      nowBullets = [
+        "📝 List 3 items only: Must / Should / Can-wait.",
+        "🎯 Do the Must for 10 minutes.",
+        "📵 Remove one distraction (phone face down, tab closed)."
+      ];
+      script = "“One lever. One pull.”";
+    }
+
+    if (urgency === "now"){
+      whats = "This feels urgent. We’ll stabilise first, then act.";
+    }
+    if (urgency === "loud"){
+      whats = "Not urgent — just loud. That’s good news. We can slow down.";
+    }
+
+    return `
+      <strong>${whats}</strong><br><br>
+      <strong>Do this now (10 minutes):</strong>
+      <ul style="margin:8px 0 0 18px; color: var(--text);">
+        <li>${nowBullets[0]}</li>
+        <li>${nowBullets[1]}</li>
+        <li>${nowBullets[2]}</li>
+      </ul>
+      <br>
+      <strong>Say this out loud:</strong><br>
+      <span style="color: var(--accent2); font-weight:800;">${script}</span>
+
+      <div class="proHint">
+        <strong>Want deeper help?</strong> PRO adds a 2–5 minute guided reset with follow-up steps tailored to your exact situation.
+      </div>
+    `;
+  }
+
+  function parentOutput(a){
+    const issue = a.issue;
+    const safe = a.safe;
+    const need = a.need;
+
+    if (safe === "no"){
+      return `
+        <strong>⚠️ Safety first.</strong><br><br>
+        If you’re not sure the kids are safe, the priority is to reduce risk before anything else.<br><br>
+        <strong>Do this now:</strong>
+        <ul style="margin:8px 0 0 18px;">
+          <li>🚧 Remove hazards / separate kids if needed</li>
+          <li>📣 Use a calm, clear voice: “Stop. Come here.”</li>
+          <li>☎️ If you need backup, call/text it now</li>
+        </ul>
+        <br>
+        <strong>Say this:</strong><br>
+        <span style="color: var(--accent2); font-weight:800;">“Safety first. Then we can talk.”</span>
+
+        <div class="proHint">
+          <strong>Parent PRO</strong> includes meltdown scripts, morning/bedtime plans, and step-by-step routines for different ages.
+        </div>
+      `;
+    }
+
+    let plan = [
+      "🔇 Lower stimulation: voice down, lights down, one room if possible.",
+      "💧 Reset basics: water/snack + sit for 60 seconds.",
+      "✅ One instruction + one choice (keep it short)."
+    ];
+    let script = "“I’m here. We’re okay. Next thing only.”";
+
+    if (issue === "chaos"){
+      plan = [
+        "🔇 Reduce inputs: one speaker at a time, one room if possible.",
+        "🧺 Quick ‘hazard tidy’: only obvious trip/spill risks.",
+        "🎯 Give one job per kid: ‘Shoes. Bag. Water.’"
+      ];
+      script = "“Team — one thing each. We’re doing the next step.”";
+    }
+    if (issue === "meltdown"){
+      plan = [
+        "🧊 Regulate first: slow voice, slow movement, short phrases.",
+        "🤝 Connection before correction: “I see you. I’m here.”",
+        "📦 Contain: move to a quieter spot, remove audience."
+      ];
+      script = "“Big feelings are allowed. Unsafe actions are not.”";
+    }
+    if (issue === "time"){
+      plan = [
+        "⏰ Time clarity: pick the minimum viable plan for the next hour.",
+        "📣 One sentence instruction: “Shoes on. Bag. We go.”",
+        "🎯 Ignore non-essentials until you’re out the door."
+      ];
+      script = "“We’re doing simple today. Simple works.”";
+    }
+    if (issue === "snap"){
+      plan = [
+        "🧊 Pause: 3 breaths before you speak.",
+        "🚪 Micro-break: 60 seconds away if safe (bathroom reset).",
+        "📣 Narrate calmly: “I’m resetting so I can be kind.”"
+      ];
+      script = "“I’m resetting. I’ll talk when I’m calm.”";
+    }
+
+    // Adjust based on "need"
+    if (need === "coop"){
+      plan[2] = "🤝 Cooperation: give 2 choices: “A or B.” Then follow through calmly.";
+    }
+    if (need === "contain"){
+      plan[0] = "📦 Containment: reduce space (one room), reduce options (one task), reduce talk (short phrases).";
+    }
+
+    return `
+      <strong>Priority order:</strong> Safety → calm → order (always).<br><br>
+
+      <strong>10-minute plan:</strong>
+      <ul style="margin:8px 0 0 18px;">
+        <li>${plan[0]}</li>
+        <li>${plan[1]}</li>
+        <li>${plan[2]}</li>
+      </ul>
+      <br>
+      <strong>Words to use:</strong><br>
+      <span style="color: var(--accent2); font-weight:800;">${script}</span>
+
+      <div class="proHint">
+        <strong>Want the full playbook?</strong> Parent PRO adds 2–5 minute guided resets plus scripts for meltdowns, mornings, bedtime, and partner overwhelm.
+      </div>
+    `;
+  }
+
+  function workOutput(a){
+    const pressure = a.pressure;
+    const goal = a.goal;
+
+    let whats = "Your job is to reduce pressure fast — then build momentum.";
+    let plan = [
+      "📝 Write your ONE outcome for today (10 words max).",
+      "⏲️ Set 25 minutes. Phone away. Start messy.",
+      "✅ Send one message or do one task that removes pressure."
+    ];
+    let script = "“One lever. One pull.”";
+
+    if (pressure === "money"){
+      whats = "Money pressure: do the thing that creates cash or leads first.";
+      plan = [
+        "📞 Do outreach / follow-ups first (even if you hate it).",
+        "🧾 Send invoices / quotes / reminders.",
+        "⏲️ 25-min sprint: one revenue task only."
+      ];
+      script = "“Revenue first. Feelings later.”";
+    }
+    if (pressure === "deadline"){
+      whats = "Deadline pressure: remove the blocker and ship the smallest version.";
+      plan = [
+        "🧱 Identify the blocker (missing info / decision / approval).",
+        "📣 Send the ‘I need X to finish’ message.",
+        "⏲️ 25-min sprint: smallest shippable piece."
+      ];
+      script = "“Small and shipped beats perfect and stuck.”";
+    }
+    if (pressure === "many"){
+      whats = "Too many tasks: choose the task that reduces pressure the fastest.";
+      plan = [
+        "📝 List 5 tasks max. Cross out 2 you can ignore today.",
+        "🎯 Circle the pressure-reducer (money / risk / relationship).",
+        "⏲️ Sprint it for 25 minutes, then reassess."
+      ];
+      script = "“I don’t do everything. I do the next right thing.”";
+    }
+
+    // Adjust based on goal
+    if (goal === "stress"){
+      plan[2] = "😮‍💨 Do the task that removes anxiety fastest (message, payment, confirmation).";
+    }
+    if (goal === "money"){
+      plan[0] = "💰 Choose the highest cash-impact action (call, follow-up, listing, quote).";
+    }
+
+    return `
+      <strong>${whats}</strong><br><br>
+
+      <strong>Next 25 minutes:</strong>
+      <ul style="margin:8px 0 0 18px;">
+        <li>${plan[0]}</li>
+        <li>${plan[1]}</li>
+        <li>${plan[2]}</li>
+      </ul>
+      <br>
+      <strong>Say this:</strong><br>
+      <span style="color: var(--accent2); font-weight:800;">${script}</span>
+
+      <div class="proHint">
+        <strong>Want a deeper 2–5 minute reset?</strong> Work PRO adds prioritisation, scripts, and a guided plan tailored to your exact situation.
+      </div>
+    `;
+  }
+
+  // -------------------------
+  // Share / copy helpers
+  // -------------------------
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    setTimeout(()=>toastEl.classList.remove("show"), 1200);
+  }
+
+  async function copyLink(){
+    try{
+      await navigator.clipboard.writeText(location.href);
+      showToast("🔗 Link copied");
+    }catch(e){
+      showToast("Copy failed — use Share");
+    }
+  }
+
+  async function shareLink(){
+    const data = { title: "Decision Reset", text: "A fast reset tool (no login).", url: location.href };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch(e) {}
+    } else {
+      copyLink();
+    }
+  }
+</script>
+
 </body>
 </html>
